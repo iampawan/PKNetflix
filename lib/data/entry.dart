@@ -11,7 +11,7 @@ class Entry {
   final String tags;
   final DateTime? netflixReleaseDate;
   final DateTime? releaseDate;
-  final double trendingIndex;
+  final num trendingIndex;
   final bool isOriginal;
   final String cast;
 
@@ -71,7 +71,7 @@ class Entry {
       releaseDate: data['releaseDate'] != null
           ? DateTimeExt.fromUnixTimestampInt(data['releaseDate'])
           : null,
-      trendingIndex: data['trendingIndex'],
+      trendingIndex: 1,
       isOriginal: data['isOriginal'],
       cast: data['cast'],
     );

@@ -8,7 +8,6 @@ import 'package:pknetflix/api/client.dart';
 import 'package:pknetflix/data/entry.dart';
 
 class EntryProvider extends ChangeNotifier {
-
   Map<String, Uint8List> _imageCache = {};
 
   static String _collectionId = "movies";
@@ -21,10 +20,15 @@ class EntryProvider extends ChangeNotifier {
 
   List<Entry> _entries = [];
   List<Entry> get entries => _entries;
-  List<Entry> get originals => _entries.where((e) => e.isOriginal).toList();
-  List<Entry> get animations => _entries.where((e) => e.genres.toLowerCase().contains('animation')).toList();
-  List<Entry> get newReleases => _entries.where((e) => e.releaseDate != null && e.releaseDate!.isAfter(DateTime.parse('2018-01-01'))).toList();
-
+  List<Entry> get originals => _entries.where((e) => e.isOriginal == true).toList();
+  List<Entry> get animations => _entries
+      .where((e) => e.genres.toLowerCase().contains('animation'))
+      .toList();
+  List<Entry> get newReleases => _entries
+      .where((e) =>
+          e.releaseDate != null &&
+          e.releaseDate!.isAfter(DateTime.parse('2018-01-01')))
+      .toList();
 
   List<Entry> get trending {
     var trending = _entries;
@@ -41,9 +45,12 @@ class EntryProvider extends ChangeNotifier {
   }
 
   Future<void> list() async {
-    var result = await ApiClient.database.listDocuments(collectionId: _collectionId);
+    var result =
+        await ApiClient.database.listDocuments(collectionId: _collectionId);
 
-    _entries = result.documents.map((document) => Entry.fromJson(document.data)).toList();
+    _entries = result.documents
+        .map((document) => Entry.fromJson(document.data))
+        .toList();
     _featured = _entries.isEmpty ? Entry.empty() : _entries[0];
 
     notifyListeners();
@@ -54,7 +61,8 @@ class EntryProvider extends ChangeNotifier {
       return _imageCache[entry.thumbnailImageId]!;
     }
 
-    final result = await ApiClient.storage.getFileView(fileId: entry.thumbnailImageId);
+    final result =
+        await ApiClient.storage.getFileView(fileId: entry.thumbnailImageId);
 
     _imageCache[entry.thumbnailImageId] = result;
 

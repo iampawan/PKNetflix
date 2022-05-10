@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 import '../data/entry.dart';
 import '../providers/entry.dart';
